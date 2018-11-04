@@ -1,0 +1,19 @@
+{
+    "name": "weinan/jsonrpc",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "twn39",
+            "email": "twn39@163.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "zendframework/zend-json-server": "^3.1",
+        "pimple/pimple": "~3.0"
+    }
+}
