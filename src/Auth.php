@@ -38,7 +38,7 @@ class Auth
 
     public function getError(Request $request)
     {
-        header('Content-type: application/json;');
+        header('Content-type: application/json;charset=utf-8');
         $response = new \Zend\Json\Server\Response\Http();
         $response->setId($request->getId());
         $response->setVersion('2.0');
