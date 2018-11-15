@@ -7,20 +7,42 @@
  */
 namespace App;
 
+use Zend\Json\Server\Request;
+
 class Auth
 {
-    public function check()
+    public function check(Request $request, array $auth)
     {
         if (empty($_SERVER['HTTP_AUTHORIZATION'])) {
-            header('Content-type: Application/json');
-            $response = new \Zend\Json\Server\Response\Http();
-            $response->setId('123');
-            $response->setVersion('2.0');
-            $response->setResult('1232');
-            $response->setError(new Error('Auth required!', Error::ERROR_AUTH));
-            return $response;
+            return $this->getError($request);
+        }
+
+        $authList = explode(' ', $_SERVER['HTTP_AUTHORIZATION']);
+
+        if (empty($authList[1])) {
+            return $this->getError($request);
+        }
+
+        $token = $authList[1];
+
+        $now = date('Ymd');
+        $data = "{$auth['algo']}-$now-{$request->getId()}-{$auth['key']}";
+        $hash = hash_hmac($auth['algo'], $data, $auth['key']);
+
+        if ($token !== $hash) {
+            return $this->getError($request);
         }
 
         return null;
+    }
+
+    public function getError(Request $request)
+    {
+        header('Content-type: application/json;');
+        $response = new \Zend\Json\Server\Response\Http();
+        $response->setId($request->getId());
+        $response->setVersion('2.0');
+        $response->setError(new Error('Auth required!', Error::ERROR_AUTH));
+        return $response;
     }
 }

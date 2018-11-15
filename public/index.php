@@ -14,12 +14,18 @@ date_default_timezone_set('Asia/Shanghai');
  * Self-called anonymous function that creates its own scope and keep the global namespace clean.
  */
 (function () {
-    $app = new Application(['app'=> 'rpc']);
+    $app = new Application([
+        'app'=> 'rpc',
+        'auth' => [
+            'key' => '21334234',
+            'algo' => 'sha1',
+        ],
+    ]);
     $app->register(new AppProvider());
 
     $container = $app->getContainer();
     $auth = $container[Auth::class];
-    $error = $auth->check();
+    $error = $auth->check($app->getRequest(), $container['config']['auth']);
     if ($error) {
         echo $error;
         return;
