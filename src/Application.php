@@ -8,7 +8,6 @@ use Pimple\ServiceProviderInterface;
 
 class Application
 {
-
     private $container;
 
     public function __construct(array $settings)
@@ -18,22 +17,26 @@ class Application
         $this->container[Server::class] = new Server();
     }
 
-    public function setClass($class) {
+    public function setClass($class)
+    {
         $server = $this->container[Server::class];
         $server->setClass($class)
             ->setReturnResponse(true);
     }
 
-    public function handle() {
+    public function handle()
+    {
         $server = $this->container[Server::class];
         return $server->handle();
     }
 
-    public function register(ServiceProviderInterface $provider) {
+    public function register(ServiceProviderInterface $provider)
+    {
         $this->container->register($provider);
     }
 
-    public function getContainer() {
+    public function getContainer()
+    {
         return $this->container;
     }
 

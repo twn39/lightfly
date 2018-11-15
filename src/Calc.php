@@ -12,7 +12,8 @@ class Calc
         $this->container = $container;
     }
 
-    public function add() {
+    public function add()
+    {
         return $this->container['config'];
     }
 }
