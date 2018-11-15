@@ -30,7 +30,7 @@ date_default_timezone_set('Asia/Shanghai');
         echo $error;
         return;
     }
-    $app->setClass(new Calc($app->getContainer()));
+    $app->setClass(new Calc($container));
     $response = $app->handle();
     echo $response;
     return;
