@@ -15,6 +15,7 @@
     "require": {
         "zendframework/zend-json-server": "^3.1",
         "pimple/pimple": "~3.0",
-        "symfony/event-dispatcher": "^4.1"
+        "symfony/event-dispatcher": "^4.1",
+        "nikic/iter": "^1.6"
     }
 }
