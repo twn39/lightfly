@@ -20,13 +20,13 @@ class Application
 
     public function setClass($class) {
         $server = $this->container[Server::class];
-        $server->setClass($class);
+        $server->setClass($class)
+            ->setReturnResponse(true);
     }
 
-
-    public function run() {
+    public function handle() {
         $server = $this->container[Server::class];
-        $server->handle();
+        return $server->handle();
     }
 
     public function register(ServiceProviderInterface $provider) {
@@ -35,5 +35,10 @@ class Application
 
     public function getContainer() {
         return $this->container;
+    }
+
+    public function getRequest()
+    {
+        return $this->container[Server::class]->getRequest();
     }
 }
