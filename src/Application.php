@@ -8,8 +8,16 @@ use Pimple\ServiceProviderInterface;
 
 class Application
 {
+    /**
+     * @var Container
+     */
     private $container;
 
+    /**
+     * Application constructor.
+     *
+     * @param array $settings
+     */
     public function __construct(array $settings)
     {
         $this->container = new Container();
@@ -17,6 +25,9 @@ class Application
         $this->container[Server::class] = new Server();
     }
 
+    /**
+     * @param $class
+     */
     public function setClass($class)
     {
         $server = $this->container[Server::class];
@@ -24,22 +35,42 @@ class Application
             ->setReturnResponse(true);
     }
 
-    public function handle()
+    /**
+     *
+     */
+    public function run()
     {
+        $auth = $this->container[Auth::class];
+        $error = $auth->check($this->getRequest(), $this->container['config']['auth']);
+        if ($error) {
+            echo $error;
+            return;
+        }
+
         $server = $this->container[Server::class];
-        return $server->handle();
+        $response = $server->handle();
+        echo $response;
     }
 
+    /**
+     * @param ServiceProviderInterface $provider
+     */
     public function register(ServiceProviderInterface $provider)
     {
         $this->container->register($provider);
     }
 
+    /**
+     * @return Container
+     */
     public function getContainer()
     {
         return $this->container;
     }
 
+    /**
+     * @return mixed
+     */
     public function getRequest()
     {
         return $this->container[Server::class]->getRequest();

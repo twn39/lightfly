@@ -8,9 +8,16 @@
 namespace App;
 
 use Zend\Json\Server\Request;
+use Zend\Json\Server\Response\Http;
 
 class Auth
 {
+    /**
+     * @param Request $request
+     * @param array   $auth
+     *
+     * @return Http|null
+     */
     public function check(Request $request, array $auth)
     {
         if (empty($_SERVER['HTTP_AUTHORIZATION'])) {
@@ -36,10 +43,15 @@ class Auth
         return null;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Http
+     */
     public function getError(Request $request)
     {
         header('Content-type: application/json;charset=utf-8');
-        $response = new \Zend\Json\Server\Response\Http();
+        $response = new Http();
         $response->setId($request->getId());
         $response->setVersion('2.0');
         $response->setError(new Error('Auth required!', Error::ERROR_AUTH));
