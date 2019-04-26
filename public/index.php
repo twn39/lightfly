@@ -14,6 +14,7 @@ require 'vendor/autoload.php';
     $app = new Application([
         'app'=> 'rpc',
         'auth' => [
+            'enable' => true,
             'key' => '21334234',
             'algo' => 'sha1',
         ],
